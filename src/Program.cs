@@ -15,13 +15,15 @@ public class Startup
     {
         services
             .AddGraphQLServer()
-            .AddQueryType<CourseQuery>();  // Add your GraphQL query types here
+            .AddQueryType<CourseQuery>()
+            .AddMutationType<CourseMutation>();
 
         services.AddAuthorization();
 
-        // Ensure to use Configuration here
         services.AddDbContext<CoreDbContext>(options =>
             options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+
+        services.AddScoped<CourseService>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -41,7 +43,7 @@ public class Startup
         // Use endpoint routing to map GraphQL
         app.UseEndpoints(endpoints =>
         {
-            endpoints.MapGraphQL(); // Correctly mapping the GraphQL endpoint
+            endpoints.MapGraphQL();
         });
     }
 

@@ -2,8 +2,16 @@
 dotnet new web -n Demo
 ```
 
-Add HotChocolate package
+## Creating MIgrations
 
 ```c#
-dotnet add package HotChocolate.AspNetCore
+dotnet ef migrations add <migration-name>
+dotnet ef database update
+```
+
+## Applying MIgrations
+
+```c#
+dotnet restore
+dotnet ef database update
 ```
