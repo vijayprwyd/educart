@@ -1,6 +1,7 @@
 
 using CourseResource;
 using Microsoft.EntityFrameworkCore;
+using PillarResource;
 
 public class Startup
 {
@@ -16,14 +17,15 @@ public class Startup
         services
             .AddGraphQLServer()
             .AddQueryType<CourseQuery>()
-            .AddMutationType<CourseMutation>();
-
+            .AddMutationType<CourseMutation>()
+            .AddMutationType<PillarMutation>();
         services.AddAuthorization();
 
         services.AddDbContext<CoreDbContext>(options =>
             options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
         services.AddScoped<CourseService>();
+        services.AddScoped<PillarService>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

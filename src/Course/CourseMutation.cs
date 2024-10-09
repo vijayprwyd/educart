@@ -13,5 +13,10 @@ public class CourseMutation
     {
         return await _courseService.AddCourseAsync(input);
     }
+
+    public async Task<Course> UpdateCourse(Guid id, UpdateCourseInput input)
+    {
+        return await _courseService.UpdateCourseAsync(id, input);
+    }
 }
 
