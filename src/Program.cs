@@ -13,28 +13,23 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        // Courses
-        services.AddScoped<ICourseQuery, CourseQuery>();
-        services.AddScoped<ICourseMutation, CourseMutation>();
+        var connectionString = Configuration.GetConnectionString("DefaultConnection");
+        services.AddDbContext<CoreDbContext>(options => options.UseNpgsql(connectionString));
+
         services.AddScoped<ICourseService, CourseService>();
-
-        // Pillars
-        services.AddScoped<IPillarQuery, PillarQuery>();
-        services.AddScoped<IPillarMutation, PillarMutation>();
         services.AddScoped<IPillarService, PillarService>();
-
-        // Queries and Mutations
-        services
-            .AddGraphQLServer()
-            .AddQueryType<ICourseQuery>()
-            .AddMutationType<ICourseMutation>()
-            .AddMutationType<PillarMutation>();
 
         services.AddAuthorization();
 
-        services.AddDbContext<CoreDbContext>(options =>
-            options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"))
-        );
+        // Set up GraphQL
+        services
+            .AddGraphQLServer()
+            .AddQueryType(d => d.Name("Query"))
+            .AddMutationType(d => d.Name("Mutation"))
+            .AddTypeExtension<CourseQuery>()
+            .AddTypeExtension<CourseMutation>()
+            .AddTypeExtension<PillarQuery>()
+            .AddTypeExtension<PillarMutation>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -43,8 +38,7 @@ public class Startup
         if (!env.IsDevelopment())
         {
             app.UseExceptionHandler("/Error");
-            // The default HSTS value is 30 days. You may want to change this for production scenarios.
-            app.UseHsts();
+            app.UseHsts(); // Apply HSTS only in production
         }
 
         app.UseHttpsRedirection();

@@ -1,10 +1,11 @@
 namespace CourseResource;
 
+[ExtendObjectType("Mutation")]
 public class CourseMutation : ICourseMutation
 {
-    private readonly CourseService _courseService;
+    private readonly ICourseService _courseService;
 
-    public CourseMutation(CourseService courseService)
+    public CourseMutation(ICourseService courseService)
     {
         _courseService = courseService;
     }

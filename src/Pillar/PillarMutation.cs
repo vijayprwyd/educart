@@ -1,10 +1,11 @@
 using PillarResource;
 
+[ExtendObjectType("Mutation")]
 public class PillarMutation : IPillarMutation
 {
-    private readonly PillarService _pillarService;
+    private readonly IPillarService _pillarService;
 
-    public PillarMutation(PillarService PillarService)
+    public PillarMutation(IPillarService PillarService)
     {
         _pillarService = PillarService;
     }

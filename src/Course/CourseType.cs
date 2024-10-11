@@ -16,10 +16,8 @@ public class AddCourseInput
 
     public required DurationUnit DurationUnit { get; set; }
 
-    public ICollection<Guid>? PillarIds;
-
+    public ICollection<Guid>? PillarIds { get; set; }
 }
-
 
 public class UpdateCourseInput
 {
@@ -35,5 +33,5 @@ public class UpdateCourseInput
 
     public DurationUnit? DurationUnit { get; set; }
 
-    public ICollection<Guid>? PillarIds;
+    public ICollection<Guid>? PillarIds { get; set; }
 }

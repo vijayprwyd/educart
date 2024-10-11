@@ -26,6 +26,7 @@ public class CourseService : ICourseService
 
     public async Task<Course> AddCourseAsync(AddCourseInput addCourseInput)
     {
+        Console.WriteLine("Came here");
         var course = new Course
         {
             Id = Guid.NewGuid(),

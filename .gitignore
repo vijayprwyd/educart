@@ -1,5 +1,5 @@
 
 /bin
 /obj
-appSettings.development.json
-appSettings.json
+appsettings.development.json
+appsettings.json

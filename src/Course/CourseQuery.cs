@@ -1,10 +1,11 @@
 namespace CourseResource;
 
+[ExtendObjectType("Query")]
 public class CourseQuery : ICourseQuery
 {
-    CourseService _courseService;
+    ICourseService _courseService;
 
-    public CourseQuery(CourseService courseService)
+    public CourseQuery(ICourseService courseService)
     {
         _courseService = courseService;
     }

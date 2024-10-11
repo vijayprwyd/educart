@@ -1,10 +1,11 @@
 namespace PillarResource;
 
+[ExtendObjectType("Query")]
 public class PillarQuery : IPillarQuery
 {
-    PillarService _pillarService;
+    IPillarService _pillarService;
 
-    public PillarQuery(PillarService courseService)
+    public PillarQuery(IPillarService courseService)
     {
         _pillarService = courseService;
     }
