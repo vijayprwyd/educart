@@ -1,18 +1,21 @@
 namespace CourseResource;
 
-public class CourseQuery
+public class CourseQuery : ICourseQuery
 {
-    public Course GetCourse() =>
-        new Course
-        {
-            Name = "C# in depth.",
-            Description = "Description",
-            Status = CourseStatus.Active,
-            Duration=3,
-            DurationUnit = DurationUnit.Hours,
-            CreatedAt=DateTime.Now,
-            UpdatedAt=DateTime.Now,
-            Language="English",
-        };
-}
+    CourseService _courseService;
 
+    public CourseQuery(CourseService courseService)
+    {
+        _courseService = courseService;
+    }
+
+    public async Task<Course> GetCourse(Guid id)
+    {
+        return await _courseService.GetCourseByIdAsync(id);
+    }
+
+    public async Task<List<Course>> GetCourses()
+    {
+        return await _courseService.GetCoursesAsync();
+    }
+}

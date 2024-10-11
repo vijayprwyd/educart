@@ -1,6 +1,6 @@
 using PillarResource;
 
-public class PillarMutation
+public class PillarMutation : IPillarMutation
 {
     private readonly PillarService _pillarService;
 
@@ -14,8 +14,13 @@ public class PillarMutation
         return await _pillarService.AddPIllarAsync(addPillarInput);
     }
 
-    public async Task<Pillar> updatePillarAsync(Guid id, UpdatePillarInput updatePillarInput)
+    public async Task<Pillar> UpdatePillar(Guid id, UpdatePillarInput updatePillarInput)
     {
         return await _pillarService.UpdatePillarAsync(id, updatePillarInput);
+    }
+
+    public async Task DeletePillar(Guid id)
+    {
+        await _pillarService.DeletePillarAsync(id);
     }
 }

@@ -1,6 +1,6 @@
 namespace CourseResource;
 
-public class CourseMutation
+public class CourseMutation : ICourseMutation
 {
     private readonly CourseService _courseService;
 
@@ -18,5 +18,9 @@ public class CourseMutation
     {
         return await _courseService.UpdateCourseAsync(id, input);
     }
-}
 
+    public async Task DeleteCourse(Guid id)
+    {
+        await _courseService.DeleteCourseAsync(id);
+    }
+}

@@ -2,13 +2,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace PillarResource;
 
-public class PillarService
+public class PillarService : IPillarService
 {
     private readonly CoreDbContext _dbContext;
 
     public PillarService(CoreDbContext dbContext)
     {
         _dbContext = dbContext;
+    }
+
+    public async Task<Pillar> GetPillarByIdAsync(Guid pillarId)
+    {
+        var pillar = await _dbContext.Pillars.FirstOrDefaultAsync(p => p.Id == pillarId);
+        if (pillar == null)
+            throw new InvalidOperationException("PIllar not found");
+        return pillar;
     }
 
     public Task<List<Pillar>> GetPillarsAsync()
@@ -35,10 +43,7 @@ public class PillarService
 
     public async Task<Pillar> UpdatePillarAsync(Guid id, UpdatePillarInput updatePillarInput)
     {
-        var pillar = _dbContext.Pillars.FirstOrDefault(p => p.Id == id);
-        if (pillar == null)
-            throw new Exception("Pillar id not found");
-
+        var pillar = await GetPillarByIdAsync(id);
         if (updatePillarInput.Name != null)
             pillar.Name = updatePillarInput.Name;
         if (updatePillarInput.Description != null)
@@ -47,5 +52,12 @@ public class PillarService
 
         await _dbContext.SaveChangesAsync();
         return pillar;
+    }
+
+    public async Task DeletePillarAsync(Guid pillarId)
+    {
+        var pillar = await GetPillarByIdAsync(pillarId);
+        _dbContext.Pillars.Remove(pillar);
+        await _dbContext.SaveChangesAsync();
     }
 }
