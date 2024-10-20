@@ -3,6 +3,7 @@ using PillarResource;
 public interface IPillarService
 {
     public Task<List<Pillar>> GetPillarsAsync();
+    public List<Pillar> GetCoursePillars(List<Guid> courseIds);
     public Task<Pillar> GetPillarByIdAsync(Guid id);
     public Task<Pillar> AddPIllarAsync(AddPillarInput input);
     public Task<Pillar> UpdatePillarAsync(Guid id, UpdatePillarInput updateCourseInput);
@@ -11,8 +12,8 @@ public interface IPillarService
 
 public interface IPillarQuery
 {
-    public Task<Pillar> GetPillar(Guid id);
-    public Task<List<Pillar>> GetPillars();
+    public Task<Pillar> GetPillar(Guid id, [Service] IPillarService pillarService);
+    public Task<List<Pillar>> GetPillars([Service] IPillarService pillarService);
 }
 
 public interface IPillarMutation

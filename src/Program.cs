@@ -24,6 +24,7 @@ public class Startup
         // Set up GraphQL
         services
             .AddGraphQLServer()
+            .AddType<CourseType>()
             .AddQueryType(d => d.Name("Query"))
             .AddMutationType(d => d.Name("Mutation"))
             .AddTypeExtension<CourseQuery>()

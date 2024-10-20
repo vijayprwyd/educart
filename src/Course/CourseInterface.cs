@@ -11,8 +11,8 @@ public interface ICourseService
 
 public interface ICourseQuery
 {
-    public Task<Course> GetCourse(Guid id);
-    public Task<List<Course>> GetCourses();
+    public Task<Course> GetCourse(Guid id, [Service] ICourseService courseService);
+    public Task<List<Course>> GetCourses([Service] ICourseService courseService);
 }
 
 public interface ICourseMutation

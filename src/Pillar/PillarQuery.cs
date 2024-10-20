@@ -3,20 +3,13 @@ namespace PillarResource;
 [ExtendObjectType("Query")]
 public class PillarQuery : IPillarQuery
 {
-    IPillarService _pillarService;
-
-    public PillarQuery(IPillarService courseService)
+    public async Task<Pillar> GetPillar(Guid id, [Service] IPillarService pillarService)
     {
-        _pillarService = courseService;
+        return await pillarService.GetPillarByIdAsync(id);
     }
 
-    public async Task<Pillar> GetPillar(Guid id)
+    public async Task<List<Pillar>> GetPillars([Service] IPillarService pillarService)
     {
-        return await _pillarService.GetPillarByIdAsync(id);
-    }
-
-    public async Task<List<Pillar>> GetPillars()
-    {
-        return await _pillarService.GetPillarsAsync();
+        return await pillarService.GetPillarsAsync();
     }
 }

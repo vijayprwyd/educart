@@ -3,20 +3,13 @@ namespace CourseResource;
 [ExtendObjectType("Query")]
 public class CourseQuery : ICourseQuery
 {
-    ICourseService _courseService;
-
-    public CourseQuery(ICourseService courseService)
+    public async Task<Course> GetCourse(Guid id, [Service] ICourseService courseService)
     {
-        _courseService = courseService;
+        return await courseService.GetCourseByIdAsync(id);
     }
 
-    public async Task<Course> GetCourse(Guid id)
+    public async Task<List<Course>> GetCourses([Service] ICourseService courseService)
     {
-        return await _courseService.GetCourseByIdAsync(id);
-    }
-
-    public async Task<List<Course>> GetCourses()
-    {
-        return await _courseService.GetCoursesAsync();
+        return await courseService.GetCoursesAsync();
     }
 }

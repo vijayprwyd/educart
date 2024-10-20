@@ -48,5 +48,5 @@ public class Course
     [Column("duration_unit")]
     public required DurationUnit DurationUnit { get; set; }
 
-    public ICollection<Pillar>? Pillars;
+    public ICollection<Pillar>? Pillars { get; set; }
 }

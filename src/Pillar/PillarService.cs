@@ -11,6 +11,16 @@ public class PillarService : IPillarService
         _dbContext = dbContext;
     }
 
+    public List<Pillar> GetCoursePillars(List<Guid> courseIds)
+    {
+        //TODO: Fix me
+        var pillars = _dbContext
+            .Pillars.Include(p => p.Courses)
+            .AsNoTracking()
+            .Where(p => p.Courses!.Select(c => c.Id).Contains(courseIds[0]));
+        return pillars.ToList();
+    }
+
     public async Task<Pillar> GetPillarByIdAsync(Guid pillarId)
     {
         var pillar = await _dbContext.Pillars.FirstOrDefaultAsync(p => p.Id == pillarId);

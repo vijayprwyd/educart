@@ -35,3 +35,21 @@ public class UpdateCourseInput
 
     public ICollection<Guid>? PillarIds { get; set; }
 }
+
+public class CourseResolvers
+{
+    public List<Pillar> GetPillars([Parent] Course course, [Service] IPillarService pillarService)
+    {
+        return pillarService.GetCoursePillars([course.Id]);
+    }
+}
+
+public class CourseType : ObjectType<Course>
+{
+    protected override void Configure(IObjectTypeDescriptor<Course> descriptor)
+    {
+        descriptor
+            .Field(c => c.Pillars)
+            .ResolveWith<CourseResolvers>(c => c.GetPillars(default!, default!));
+    }
+}
