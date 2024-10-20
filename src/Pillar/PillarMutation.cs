@@ -3,25 +3,25 @@ using PillarResource;
 [ExtendObjectType("Mutation")]
 public class PillarMutation : IPillarMutation
 {
-    private readonly IPillarService _pillarService;
-
-    public PillarMutation(IPillarService PillarService)
+    public async Task<Pillar> AddPillar(
+        AddPillarInput input,
+        [Service] IPillarService pillarService
+    )
     {
-        _pillarService = PillarService;
+        return await pillarService.AddPIllarAsync(input);
     }
 
-    public async Task<Pillar> AddPillar(AddPillarInput addPillarInput)
+    public async Task<Pillar> UpdatePillar(
+        Guid id,
+        UpdatePillarInput updatePillarInput,
+        [Service] IPillarService pillarService
+    )
     {
-        return await _pillarService.AddPIllarAsync(addPillarInput);
+        return await pillarService.UpdatePillarAsync(id, updatePillarInput);
     }
 
-    public async Task<Pillar> UpdatePillar(Guid id, UpdatePillarInput updatePillarInput)
+    public async Task DeletePillar(Guid id, [Service] IPillarService pillarService)
     {
-        return await _pillarService.UpdatePillarAsync(id, updatePillarInput);
-    }
-
-    public async Task DeletePillar(Guid id)
-    {
-        await _pillarService.DeletePillarAsync(id);
+        await pillarService.DeletePillarAsync(id);
     }
 }

@@ -24,15 +24,15 @@ public class PillarService : IPillarService
         return _dbContext.Pillars.ToListAsync();
     }
 
-    public async Task<Pillar> AddPIllarAsync(AddPillarInput addPillarInput)
+    public async Task<Pillar> AddPIllarAsync(AddPillarInput input)
     {
         var pillar = new Pillar
         {
             Id = Guid.NewGuid(),
-            Name = addPillarInput.Name,
-            Description = addPillarInput.Description,
-            CreatedAt = addPillarInput.CreatedAt,
-            UpdatedAt = addPillarInput.UpdatedAt,
+            Name = input.Name,
+            Description = input.Description,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow,
         };
 
         await _dbContext.Pillars.AddAsync(pillar);

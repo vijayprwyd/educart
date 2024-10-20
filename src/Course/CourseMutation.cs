@@ -3,25 +3,25 @@ namespace CourseResource;
 [ExtendObjectType("Mutation")]
 public class CourseMutation : ICourseMutation
 {
-    private readonly ICourseService _courseService;
-
-    public CourseMutation(ICourseService courseService)
+    public async Task<Course> AddCourse(
+        AddCourseInput input,
+        [Service] ICourseService courseService
+    )
     {
-        _courseService = courseService;
+        return await courseService.AddCourseAsync(input);
     }
 
-    public async Task<Course> AddCourse(AddCourseInput input)
+    public async Task<Course> UpdateCourse(
+        Guid id,
+        UpdateCourseInput input,
+        [Service] ICourseService courseService
+    )
     {
-        return await _courseService.AddCourseAsync(input);
+        return await courseService.UpdateCourseAsync(id, input);
     }
 
-    public async Task<Course> UpdateCourse(Guid id, UpdateCourseInput input)
+    public async Task DeleteCourse(Guid id, [Service] ICourseService courseService)
     {
-        return await _courseService.UpdateCourseAsync(id, input);
-    }
-
-    public async Task DeleteCourse(Guid id)
-    {
-        await _courseService.DeleteCourseAsync(id);
+        await courseService.DeleteCourseAsync(id);
     }
 }

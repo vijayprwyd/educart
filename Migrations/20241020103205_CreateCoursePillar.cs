@@ -15,19 +15,19 @@ namespace educart.Migrations
                 name: "course",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Language = table.Column<string>(type: "text", nullable: false),
-                    Duration = table.Column<int>(type: "integer", nullable: false),
-                    DurationUnit = table.Column<int>(type: "integer", nullable: false)
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    name = table.Column<string>(type: "text", nullable: false),
+                    description = table.Column<string>(type: "text", nullable: false),
+                    status = table.Column<int>(type: "integer", nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    language = table.Column<string>(type: "text", nullable: false),
+                    duration = table.Column<int>(type: "integer", nullable: false),
+                    duration_unit = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_course", x => x.Id);
+                    table.PrimaryKey("PK_course", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -37,8 +37,8 @@ namespace educart.Migrations
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     name = table.Column<string>(type: "text", nullable: false),
                     description = table.Column<string>(type: "text", nullable: false),
-                    createdAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    updatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -49,30 +49,30 @@ namespace educart.Migrations
                 name: "course_pillar",
                 columns: table => new
                 {
-                    CourseId = table.Column<Guid>(type: "uuid", nullable: false),
-                    PillarId = table.Column<Guid>(type: "uuid", nullable: false)
+                    course_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    pillar_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_course_pillar", x => new { x.CourseId, x.PillarId });
+                    table.PrimaryKey("PK_course_pillar", x => new { x.course_id, x.pillar_id });
                     table.ForeignKey(
-                        name: "FK_course_pillar_course_CourseId",
-                        column: x => x.CourseId,
+                        name: "FK_course_pillar_course_course_id",
+                        column: x => x.course_id,
                         principalTable: "course",
-                        principalColumn: "Id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_course_pillar_pillar_PillarId",
-                        column: x => x.PillarId,
+                        name: "FK_course_pillar_pillar_pillar_id",
+                        column: x => x.pillar_id,
                         principalTable: "pillar",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_course_pillar_PillarId",
+                name: "IX_course_pillar_pillar_id",
                 table: "course_pillar",
-                column: "PillarId");
+                column: "pillar_id");
         }
 
         /// <inheritdoc />

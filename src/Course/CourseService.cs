@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using PillarResource;
 
 namespace CourseResource;
 
@@ -24,25 +25,22 @@ public class CourseService : ICourseService
         return await _dbContext.Courses.ToListAsync();
     }
 
-    public async Task<Course> AddCourseAsync(AddCourseInput addCourseInput)
+    public async Task<Course> AddCourseAsync(AddCourseInput input)
     {
-        Console.WriteLine("Came here");
         var course = new Course
         {
             Id = Guid.NewGuid(),
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
-            Name = addCourseInput.Name,
-            Description = addCourseInput.Description,
-            Duration = addCourseInput.Duration,
-            DurationUnit = addCourseInput.DurationUnit,
-            Language = addCourseInput.Language,
-            Status = addCourseInput.Status,
+            Name = input.Name,
+            Description = input.Description,
+            Duration = input.Duration,
+            DurationUnit = input.DurationUnit,
+            Language = input.Language,
+            Status = input.Status,
             Pillars =
-                addCourseInput.PillarIds != null
-                    ? _dbContext
-                        .Pillars.Where(p => addCourseInput.PillarIds.Contains(p.Id))
-                        .ToList()
+                input.PillarIds != null
+                    ? _dbContext.Pillars.Where(p => input.PillarIds.Contains(p.Id)).ToList()
                     : null,
         };
         await _dbContext.Courses.AddAsync(course);
@@ -53,14 +51,17 @@ public class CourseService : ICourseService
 
     public async Task<Course> UpdateCourseAsync(Guid id, UpdateCourseInput updateCourseInput)
     {
-        var course = await GetCourseByIdAsync(id);
+        var course = await _dbContext
+            .Courses.Include(c => c.Pillars)
+            .FirstOrDefaultAsync(c => c.Id == id);
+
+        if (course == null)
+            throw new InvalidOperationException("Course not found");
 
         if (!string.IsNullOrEmpty(updateCourseInput.Name))
             course.Name = updateCourseInput.Name;
         if (!string.IsNullOrEmpty(updateCourseInput.Description))
             course.Description = updateCourseInput.Description;
-        if (!string.IsNullOrEmpty(updateCourseInput.Language))
-            course.Language = updateCourseInput.Language;
         if (!string.IsNullOrEmpty(updateCourseInput.Language))
             course.Language = updateCourseInput.Language;
 
@@ -71,7 +72,25 @@ public class CourseService : ICourseService
         if (updateCourseInput.Status.HasValue)
             course.Status = updateCourseInput.Status.Value;
         if (updateCourseInput.PillarIds != null)
-            _dbContext.Pillars.Where(p => updateCourseInput.PillarIds.Contains(p.Id)).ToList();
+        {
+            if (course.Pillars != null)
+                course.Pillars.Clear();
+
+            var pillarsToAdd = await _dbContext
+                .Pillars.Where(p => updateCourseInput.PillarIds.Contains(p.Id))
+                .ToListAsync();
+
+            var pillars = new List<Pillar>();
+            foreach (var pillar in pillarsToAdd)
+            {
+                if (course.Pillars == null || !course.Pillars.Any(p => p.Id == pillar.Id))
+                {
+                    pillars.Add(pillar);
+                }
+            }
+            if (pillars.Count > 0)
+                course.Pillars = pillars;
+        }
 
         course.UpdatedAt = DateTime.UtcNow;
 

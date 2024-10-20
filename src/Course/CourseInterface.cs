@@ -4,7 +4,7 @@ public interface ICourseService
 {
     public Task<List<Course>> GetCoursesAsync();
     public Task<Course> GetCourseByIdAsync(Guid id);
-    public Task<Course> AddCourseAsync(AddCourseInput addCourseInput);
+    public Task<Course> AddCourseAsync(AddCourseInput input);
     public Task<Course> UpdateCourseAsync(Guid id, UpdateCourseInput updateCourseInput);
     public Task DeleteCourseAsync(Guid id);
 }
@@ -17,7 +17,11 @@ public interface ICourseQuery
 
 public interface ICourseMutation
 {
-    public Task<Course> AddCourse(AddCourseInput addCourseInput);
-    public Task<Course> UpdateCourse(Guid id, UpdateCourseInput updateCourseInput);
-    public Task DeleteCourse(Guid id);
+    public Task<Course> AddCourse(AddCourseInput input, [Service] ICourseService courseService);
+    public Task<Course> UpdateCourse(
+        Guid id,
+        UpdateCourseInput updateCourseInput,
+        [Service] ICourseService courseService
+    );
+    public Task DeleteCourse(Guid id, [Service] ICourseService courseService);
 }

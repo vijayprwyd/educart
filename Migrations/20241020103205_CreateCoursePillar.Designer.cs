@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace educart.Migrations
 {
     [DbContext(typeof(CoreDbContext))]
-    [Migration("20241006082332_CreateCoursePillar")]
+    [Migration("20241020103205_CreateCoursePillar")]
     partial class CreateCoursePillar
     {
         /// <inheritdoc />
@@ -26,15 +26,15 @@ namespace educart.Migrations
 
             modelBuilder.Entity("CoursePillar", b =>
                 {
-                    b.Property<Guid>("CourseId")
+                    b.Property<Guid>("course_id")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("PillarId")
+                    b.Property<Guid>("pillar_id")
                         .HasColumnType("uuid");
 
-                    b.HasKey("CourseId", "PillarId");
+                    b.HasKey("course_id", "pillar_id");
 
-                    b.HasIndex("PillarId");
+                    b.HasIndex("pillar_id");
 
                     b.ToTable("course_pillar", (string)null);
                 });
@@ -43,34 +43,43 @@ namespace educart.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("description");
 
                     b.Property<int>("Duration")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("duration");
 
                     b.Property<int>("DurationUnit")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("duration_unit");
 
                     b.Property<string>("Language")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("language");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("name");
 
                     b.Property<int>("Status")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
 
                     b.HasKey("Id");
 
@@ -79,25 +88,30 @@ namespace educart.Migrations
 
             modelBuilder.Entity("PillarResource.Pillar", b =>
                 {
-                    b.Property<Guid>("id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
-                    b.Property<DateTime>("createdAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
 
-                    b.Property<string>("description")
+                    b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("description");
 
-                    b.Property<string>("name")
+                    b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("name");
 
-                    b.Property<DateTime>("updatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("pillar", (string)null);
                 });
@@ -106,13 +120,13 @@ namespace educart.Migrations
                 {
                     b.HasOne("CourseResource.Course", null)
                         .WithMany()
-                        .HasForeignKey("CourseId")
+                        .HasForeignKey("course_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("PillarResource.Pillar", null)
                         .WithMany()
-                        .HasForeignKey("PillarId")
+                        .HasForeignKey("pillar_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

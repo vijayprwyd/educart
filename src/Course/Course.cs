@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using PillarResource;
 
 namespace CourseResource;
@@ -7,7 +8,7 @@ public enum DurationUnit
 {
     Minutes = 1,
     Hours = 2,
-    Days = 3
+    Days = 3,
 }
 
 public enum CourseStatus
@@ -17,26 +18,35 @@ public enum CourseStatus
     Archived = 2,
 }
 
-
-public class Course {
+public class Course
+{
     [Key]
-    public Guid Id {get; set;}
+    [Column("id")]
+    public Guid Id { get; set; }
+
+    [Column("name")]
     public required string Name { get; set; }
 
+    [Column("description")]
     public required string Description { get; set; }
 
+    [Column("status")]
     public required CourseStatus Status { get; set; }
 
-    public required DateTime CreatedAt {get; set;}
+    [Column("created_at")]
+    public required DateTime CreatedAt { get; set; }
 
-    public required DateTime UpdatedAt {get; set;}
+    [Column("updated_at")]
+    public required DateTime UpdatedAt { get; set; }
 
-    public required string Language {get; set;}
+    [Column("language")]
+    public required string Language { get; set; }
 
-    public required int Duration {get; set;}
+    [Column("duration")]
+    public required int Duration { get; set; }
 
-    public required DurationUnit DurationUnit {get; set;}
+    [Column("duration_unit")]
+    public required DurationUnit DurationUnit { get; set; }
 
     public ICollection<Pillar>? Pillars;
-
 }
